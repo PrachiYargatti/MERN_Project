@@ -1,12 +1,12 @@
-import Navbar from "../components/Navbar"
+import AppNavbar from "../components/AppNavbar";
 
-function Profile() {
+function About() {
     return (
         <div>
-            <Navbar />
-            <h1>Profile</h1>
+            <AppNavbar />
+            <h1>About</h1>
         </div>                                                                                                                           
     )
 }
 
-export default Profile
+export default About
