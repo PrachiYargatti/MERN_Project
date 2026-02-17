@@ -18,15 +18,29 @@ export async function getAllCourses(token) {
 export async function deleteCourseById(courseId, token) {
   const URL = config.BASE_URL + `/course/delete/${courseId}`;
   const response = await axios.delete(URL, {
-    headers: { token }
+    headers: { token } 
   });
   return response.data;
 }
 
-export async function updateCourse(courseId, course, token) {
+export const updateCourse = async (courseId, course, token) => {
   const URL = config.BASE_URL + `/course/update/${courseId}`;
   const response = await axios.put(URL, course, {
     headers: { token }
   });
   return response.data;
-}
+};
+
+export const addCourse = async (course, token) => {
+  const URL = config.BASE_URL + `/course/add`;
+  const response = await axios.post(
+    URL,
+    course,
+    {
+      headers: {
+        token
+      }
+    }
+  );
+  return response.data;
+};

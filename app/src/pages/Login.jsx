@@ -56,9 +56,9 @@ function Login() {
                     <button className="btn btn-success" onClick={signin}>Sign in</button>
                 </div>
 
-                <div>
+                {/* <div>
                     Don't have an account? then to register <Link to="/register">Click here</Link>
-                </div>
+                </div> */}
             </div>
         </>
     )

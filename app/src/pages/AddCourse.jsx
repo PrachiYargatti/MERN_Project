@@ -1,60 +1,50 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { updateCourse } from "../services/courseService";
+import { addCourse } from "../services/courseService";
 import AppNavbar from "../components/AppNavbar";
 import { toast } from "react-toastify";
 
-function UpdateCourse() {
-  const { state } = useLocation(); // contains old course data
+function AddCourse() {
   const navigate = useNavigate();
   const token = sessionStorage.getItem("token");
 
-  // EMPTY fields initially
   const [course, setCourse] = useState({
     course_name: "",
     description: "",
+    fees: "",
     start_date: "",
     end_date: "",
-    fees: "",
     video_expire_days: ""
   });
-
-  if (!state?.course)
-    return <div className="container mt-4">No course data</div>;
 
   const handleChange = (e) => {
     setCourse({ ...course, [e.target.name]: e.target.value });
   };
 
   const submit = async () => {
-    // ✅ MERGE old + new
-    const updatedCourse = {
-      ...state.course,   // existing DB values
-      ...course          // overwrite only changed fields
+    const payload = {
+      ...course,
+      fees: Number(course.fees),
+      video_expire_days: Number(course.video_expire_days)
     };
 
-    const result = await updateCourse(
-      state.course.course_id,
-      updatedCourse,
-      token
-    );
+    const result = await addCourse(payload, token);
 
     if (result.status === "success") {
-      toast.success("Course updated successfully");
+      toast.success("Course added successfully");
       navigate("/course/all-courses");
     } else {
       toast.error(result.error);
+      toast.error("fill all the fields")
     }
   };
 
   return (
     <>
       <AppNavbar />
-
       <div className="container mt-4 w-50">
         <div className="shadow-lg border rounded p-4">
-
-          <h2 className="mb-4 text-center">Update Course</h2>
+          <h2 className="mb-4 text-center">Add Course</h2>
 
           <div className="mb-3">
             <label className="form-label">Course Name</label>
@@ -64,7 +54,6 @@ function UpdateCourse() {
               className="form-control"
               value={course.course_name}
               onChange={handleChange}
-              placeholder={state.course.course_name}
             />
           </div>
 
@@ -76,7 +65,6 @@ function UpdateCourse() {
               className="form-control"
               value={course.description}
               onChange={handleChange}
-              placeholder={state.course.description}
             />
           </div>
 
@@ -110,7 +98,6 @@ function UpdateCourse() {
               className="form-control"
               value={course.fees}
               onChange={handleChange}
-              placeholder={state.course.fees}
             />
           </div>
 
@@ -122,21 +109,16 @@ function UpdateCourse() {
               className="form-control"
               value={course.video_expire_days}
               onChange={handleChange}
-              placeholder={state.course.video_expire_days}
             />
           </div>
 
-          <button
-            className="btn btn-success d-block mx-auto"
-            onClick={submit}
-          >
-            Update Course
+          <button className="btn btn-primary d-block mx-auto" onClick={submit}>
+            Add Course
           </button>
-
         </div>
       </div>
     </>
   );
 }
 
-export default UpdateCourse;
+export default AddCourse;

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import { getAllCourses } from "../services/courseService";
 import AppNavbar from "../components/AppNavbar";
 import { deleteCourseById } from "../services/courseService";
@@ -7,7 +8,20 @@ import { toast } from "react-toastify";
 function AllCourses() {
   const [courses, setCourses] = useState([]);
 
+  const navigate = useNavigate()
+
   const token = sessionStorage.getItem("token");
+
+  // On first render
+  // React runs useEffect
+  // token is read from sessionStorage
+  // If token exists → getCourses() is called
+  // If not → nothing happens
+
+  // Whenever token changes
+  // Effect runs again
+  // If user logs in (token appears) → courses load automatically
+  // If user logs out (token removed) → effect runs, but if(token) blocks API call
 
   useEffect(() => {
     if (token) {
