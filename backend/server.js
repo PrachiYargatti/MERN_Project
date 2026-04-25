@@ -12,9 +12,9 @@ const app = express()
 
 // CORS FIRST
 app.use(cors({
-  origin: '*',
+  origin: "*",
   credentials: true
-}))
+}));
 
 // JSON
 app.use(express.json())
@@ -31,6 +31,8 @@ app.use("/video", videoRouter)
 app.use("/admin", adminRouter)
 app.use("/student", studentRouter)
 
-app.listen(4000, () => {
-  console.log("Server running on port 4000")
-})
+const PORT = process.env.PORT || 4000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
