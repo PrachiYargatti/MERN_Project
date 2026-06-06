@@ -12,10 +12,12 @@ const app = express()
 
 // CORS FIRST
 app.use(cors({
-  origin: true,
+  origin: [
+    "http://localhost:5173",
+    "https://course-management-system-student-appl.netlify.app/"
+  ],
   credentials: true
-}));
-
+}))
 // JSON
 app.use(express.json())
 
