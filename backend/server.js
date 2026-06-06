@@ -14,7 +14,7 @@ const app = express()
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://course-management-system-student-appl.netlify.app/"
+    "https://course-management-system-student-appl.netlify.app"
   ],
   credentials: true
 }))
