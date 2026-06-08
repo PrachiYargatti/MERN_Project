@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { updateCourse } from "../services/courseService";
-import AppNavbar from "../components/AppNavbar";
+import { updateCourse } from "../../services/courseService";
+import AppNavbar from "../../components/AppNavbar";
 import { toast } from "react-toastify";
 
 function UpdateCourse() {
@@ -27,7 +27,7 @@ function UpdateCourse() {
   };
 
   const submit = async () => {
-    // ✅ MERGE old + new
+    // MERGE old + new
     const updatedCourse = {
       ...state.course,   // existing DB values
       ...course          // overwrite only changed fields

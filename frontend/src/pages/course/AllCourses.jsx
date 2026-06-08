@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { getAllCourses } from "../services/courseService";
-import AppNavbar from "../components/AppNavbar";
-import { deleteCourseById } from "../services/courseService";
+import { getAllCourses } from "../../services/courseService";
+import AppNavbar from "../../components/AppNavbar";
+import { deleteCourseById } from "../../services/courseService";
 import { toast } from "react-toastify";
 
 function AllCourses() {

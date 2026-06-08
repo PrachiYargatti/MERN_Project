@@ -11,11 +11,11 @@ function Navbar() {
   const logout = () => {
     sessionStorage.clear();
     setLoginStatus(false);
-    navigate("/");
+    navigate("/login");
   };
 
   return (
-    <nav className="navbar navbar-expand-lg bg-info navbar-dark">
+    <nav className="navbar navbar-expand-lg bg-primary navbar-dark">
       <div className="container-fluid">
         <span className="navbar-brand">Student Portal</span>
 
@@ -31,7 +31,7 @@ function Navbar() {
         <div className="collapse navbar-collapse" id="studentNavbar">
           <ul className="navbar-nav me-auto">
             <li className="nav-item">
-              <Link className="nav-link" to="/home">Home</Link>
+              <Link className="nav-link" to="/">Home</Link>
             </li>
 
             <li className="nav-item">
@@ -48,7 +48,7 @@ function Navbar() {
           {!loginStatus ? (
             <button
               className="btn btn-outline-light"
-              onClick={() => navigate('/')}
+              onClick={() => navigate("/login")}
             >
               Login
             </button>
@@ -62,17 +62,22 @@ function Navbar() {
               </button>
 
               <ul className="dropdown-menu dropdown-menu-end">
-                <li>
-                  <Link className="dropdown-item" to="/profile">
-                    Update Profile
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="/change-password">
-                    Change Password
-                  </Link>
-                </li>
-                <li><hr className="dropdown-divider" /></li>
+                {role !== "admin" && (
+                  <>
+                    <li>
+                      <Link className="dropdown-item" to="/profile">
+                        Update Profile
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/change-password">
+                        Change Password
+                      </Link>
+                    </li>
+                    <li><hr className="dropdown-divider" /></li>
+                  </>
+                )}
+
                 <li>
                   <button
                     className="dropdown-item text-danger"

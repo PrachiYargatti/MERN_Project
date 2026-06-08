@@ -6,16 +6,16 @@ import AppNavbar from "../components/AppNavbar";
 import courseImages from "../utils/courseImages";
 
 function Home() {
-    const [courses, setCourses] = useState([]);
+    const [courses, setCourses] = useState([]); //useState stores data
     const navigate = useNavigate();
 
-    //used to work with the lifecycle of components
+    //used to work with the lifecycle of components, useEffect responds to data changes
     useEffect(() => { getCourses() }, []);
 
     const getCourses = async () => {
         const result = await getAllActiveCourses();
-        console.log(result);
-        if (result.status === 'success') 
+        console.log(result)
+        if (result.status === 'success')
             setCourses(result.data);
     }
 

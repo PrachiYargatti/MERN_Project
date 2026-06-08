@@ -44,3 +44,22 @@ export const addCourse = async (course, token) => {
   );
   return response.data;
 };
+
+export const registerCourse = async (courseId, student, token) => {
+  const URL = config.BASE_URL + `/student/register-to-course`;
+
+  const response = await axios.post(
+    URL,
+    {
+      course_id: courseId,
+      name: student.name,
+      email: student.email,
+      mobile_no: student.mobile_no
+    },
+    {
+      headers: { token }
+    }
+  );
+
+  return response.data;
+};

@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { addCourse } from "../services/courseService";
-import AppNavbar from "../components/AppNavbar";
+import { addCourse } from "../../services/courseService";
+import AppNavbar from "../../components/AppNavbar";
 import { toast } from "react-toastify";
 
 function AddCourse() {
@@ -54,6 +54,7 @@ function AddCourse() {
               className="form-control"
               value={course.course_name}
               onChange={handleChange}
+              placeholder="Enter course name"
             />
           </div>
 
@@ -65,6 +66,7 @@ function AddCourse() {
               className="form-control"
               value={course.description}
               onChange={handleChange}
+              placeholder="Enter description"
             />
           </div>
 
@@ -76,6 +78,7 @@ function AddCourse() {
               className="form-control"
               value={course.start_date}
               onChange={handleChange}
+              placeholder="dd-----yyyy"
             />
           </div>
 
@@ -87,6 +90,7 @@ function AddCourse() {
               className="form-control"
               value={course.end_date}
               onChange={handleChange}
+              placeholder="dd-----yyyy"
             />
           </div>
 
@@ -98,6 +102,7 @@ function AddCourse() {
               className="form-control"
               value={course.fees}
               onChange={handleChange}
+              placeholder="Enter course fees"
             />
           </div>
 
@@ -109,6 +114,7 @@ function AddCourse() {
               className="form-control"
               value={course.video_expire_days}
               onChange={handleChange}
+              placeholder="Enter number of days"
             />
           </div>
 

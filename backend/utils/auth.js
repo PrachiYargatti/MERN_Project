@@ -2,33 +2,9 @@ const jwt = require("jsonwebtoken")
 const config = require("./config")
 const result = require("./result")
 
-// function authUser(req,res,next) {
-//     const path = req.url
-//     if(path == '/user/signin' || path == '/user/signup' || path == '/course/all-active-courses')
-//         return next()
-//     else {
-//         const token = req.headers.token
-//         if (!token)
-//             res.send(result.createResult("Token is missing"))
-//         else{
-//             try {
-//                 //authorization
-//                 const payload = jwt.verify(token, config.SECRET)
-//                 req.headers.email = payload.email
-//                 req.headers.role = payload.role
-//                 return next()
-//             }
-//             catch (err){
-//                 res.send(result.createResult("Token is Invalid"))
-//             }
-//        }
-//     }
-// }
-
 function authUser(req, res, next) {
   const openRoutes = [
     "/user/signin",
-    "/user/signup",
     "/course/all-active-courses",
     "/student/register-to-course"
   ]
@@ -36,7 +12,8 @@ function authUser(req, res, next) {
   if (openRoutes.includes(req.path)) return next()
 
   const token = req.headers.token
-  if (!token) return res.status(401).send(result.createResult("Token missing"))
+  if (!token) 
+    return res.status(401).send(result.createResult("Token missing"))
 
   try {
     const payload = jwt.verify(token, config.SECRET)
@@ -48,12 +25,14 @@ function authUser(req, res, next) {
 }
 
 function checkAuthorization(req, res, next) {
-  if (req.user.role === "admin") return next()
+  if (req.user.role === "admin") 
+    return next()
   res.status(403).send(result.createResult("Unauthorized"))
 }
 
 function checkAuthorizationForStudent(req, res, next) {
-  if (req.user.role === "student") return next()
+  if (req.user.role === "student") 
+    return next()
   res.status(403).send(result.createResult("Unauthorized"))
 }
 
@@ -98,4 +77,27 @@ module.exports = {authUser, checkAuthorization, checkAuthorizationForStudent}
 //   } catch (err) {
 //     return res.status(401).send(result.createResult("Invalid token"))
 //   }
+// }
+
+// function authUser(req,res,next) {
+//     const path = req.url
+//     if(path == '/user/signin' || path == '/user/signup' || path == '/course/all-active-courses')
+//         return next()
+//     else {
+//         const token = req.headers.token
+//         if (!token)
+//             res.send(result.createResult("Token is missing"))
+//         else{
+//             try {
+//                 //authorization
+//                 const payload = jwt.verify(token, config.SECRET)
+//                 req.headers.email = payload.email
+//                 req.headers.role = payload.role
+//                 return next()
+//             }
+//             catch (err){
+//                 res.send(result.createResult("Token is Invalid"))
+//             }
+//        }
+//     }
 // }

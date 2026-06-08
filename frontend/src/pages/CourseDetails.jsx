@@ -3,7 +3,13 @@ import AppNavbar from "../components/AppNavbar";
 import courseImages from "../utils/courseImages";
 
 function CourseDetails() {
-  const location = useLocation();
+  const location = useLocation(); //gives access to the current route’s metadata.
+  // useLocation is your component’s awareness of where it is and how it got there.
+  // What it gives you:
+  // pathname → current route (/course-details)
+  // search → query string (?id=3)
+  // hash → anchor (#section)
+  // state → invisible data passed during navigation
   const navigate = useNavigate();
   const { course } = location.state || {};
 
@@ -52,7 +58,7 @@ function CourseDetails() {
             <p><strong>End Date: </strong>{formatDate(course.end_date)}</p>
             <p><strong>Fees: </strong>₹{course.fees}</p>
 
-            <button className="btn btn-success py-2 px-4">
+            <button className="btn btn-success py-2 px-4" onClick={() => navigate("/register", { state: { course } })}>
               Register to Course
             </button>
           </div>

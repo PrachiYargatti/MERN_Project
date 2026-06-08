@@ -1,8 +1,8 @@
-const express = require("express")
+const express = require("express") // js framework, used create backend server app
 const result = require("../utils/result")
 const pool = require("../db/pool")
 const { checkAuthorization } = require("../utils/auth")
-const router = express.Router()
+const router = express.Router() // mini express app, for handling routes, router instance
 
 // Admin APIs
 // GET : /video/all-videos?course_id=?
@@ -10,13 +10,7 @@ router.get("/all-videos", checkAuthorization, (req, res) => {
     const { course_id } = req.query;
 
     let sql = `
-        SELECT 
-        v.video_id,
-        v.title,
-        v.description,
-        v.youtube_url,
-        v.course_id,
-        c.course_name
+        SELECT v.video_id, v.title, v.description, v.youtube_url, v.course_id, c.course_name
         FROM videos v
         JOIN courses c ON v.course_id = c.course_id
     `;
@@ -55,7 +49,7 @@ router.put("/update/:video_id", checkAuthorization, (req,res) => {
 
 // DELETE : /video/delete/:video_id
 router.delete("/delete/:video_id", checkAuthorization, (req,res) => {
-    const {video_id} = req.params 
+    const {video_id} = req.params
     const sql = `DELETE FROM videos WHERE video_id=?;`
     pool.query(sql, [video_id], (error, data) => {
         res.send(result.createResult(error,data))

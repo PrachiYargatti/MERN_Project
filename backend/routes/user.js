@@ -1,23 +1,13 @@
-const express = require("express")
+const express = require("express") //js framework, used to create backend server application
 const cryptojs = require("crypto-js")
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken") //Create secure, tamper-proof tokens
 
 const result = require("../utils/result")
 const config = require("../utils/config")
 const pool = require("../db/pool")
 const { checkAuthorization } = require("../utils/auth")
 
-const router = express.Router()
-
-// // POST : /user/signup
-// router.post("/signup", (req, res) => {
-//     const {email, password, role} = req.body
-//     const sql = `INSERT INTO users(email, password, role) VALUES(?,?,?)`
-//     const hashedPassword = cryptojs.SHA256(password).toString()
-//     pool.query(sql, [email, hashedPassword, role], (error, data) => {
-//         res.send(result.createResult(error, data))
-//     })
-// })
+const router = express.Router() // mini express app, handles the routes
 
 // POST : /user/signin
 router.post("/signin", (req, res) => {
@@ -31,7 +21,7 @@ router.post("/signin", (req, res) => {
             res.send(result.createResult("Invalid email or password"))
         else{
             console.log(data)
-            const user = data[0]
+            const user = data[0] 
             const payload = {
                 email: user.email,
                 role: user.role
@@ -57,13 +47,17 @@ router.get("/", (req,res) => {
     })
 })
 
-//GET : /user/all-students (get all students (admin))
-router.get("/all-students", checkAuthorization, (req,res) => {
-    const sql = `SELECT * FROM users;`
-    pool.query(sql, (error,data) => {
-        res.send(result.createResult(error,data))
-    })
-}) 
+module.exports = router
+
+// // POST : /user/signup
+// router.post("/signup", (req, res) => {
+//     const {email, password, role} = req.body
+//     const sql = `INSERT INTO users(email, password, role) VALUES(?,?,?)`
+//     const hashedPassword = cryptojs.SHA256(password).toString()
+//     pool.query(sql, [email, hashedPassword, role], (error, data) => {
+//         res.send(result.createResult(error, data))
+//     })
+// })
 
 // // DELETE : /user/delete (admin )
 // router.delete("/delete", (req,res) => {
@@ -90,8 +84,6 @@ router.get("/all-students", checkAuthorization, (req,res) => {
 //         })
 //     }
 // })
-
-module.exports = router
 
 // router.get("/", (req,res) => {
 //     const sql = `SELECT * FROM users;`

@@ -2,7 +2,7 @@ const express = require("express")
 const result = require("../utils/result")
 const pool = require("../db/pool")
 const cryptojs = require("crypto-js")
-const { checkAuthorizationForStudent, checkAuthorization } = require("../utils/auth")
+const { checkAuthorizationForStudent } = require("../utils/auth")
 
 const router = express.Router()
 
@@ -105,12 +105,12 @@ router.get("/my-course-with-videos", checkAuthorizationForStudent, (req, res) =>
     ORDER BY c.course_id, v.added_at DESC
   `
 
-  pool.query(sql, [email], (err, rows) => {
+  pool.query(sql, [email], (err, data) => {
     if (err) return res.send(result.createResult(err))
 
     // reshape → course → videos[]
     const courses = {}
-    rows.forEach(r => {
+    data.forEach(r => {
       if (!courses[r.course_id]) {
         courses[r.course_id] = {
           course_id: r.course_id,
@@ -136,7 +136,7 @@ router.get("/my-course-with-videos", checkAuthorizationForStudent, (req, res) =>
 // PUT : student/update-profile
 router.put("/update-profile", checkAuthorizationForStudent, (req, res) => {
   const oldEmail = req.user.email
-  const { name, mobile_no, newEmail } = req.body
+  const { name, mobile_no } = req.body
 
   // update students table
   const updateStudentSql = `
@@ -144,46 +144,15 @@ router.put("/update-profile", checkAuthorizationForStudent, (req, res) => {
     SET name = ?, mobile_no = ?
     WHERE email = ?
   `
-
   pool.query(updateStudentSql, [name, mobile_no, oldEmail], (err) => {
-    if (err) return res.send(result.createResult(err))
-
-    // if email is NOT changing → done
-    if (!newEmail || newEmail === oldEmail) {
-      return res.send(result.createResult(null, "Profile updated successfully"))
-    }
-
-    // update users table
-    const updateUserSql = `
-      UPDATE users 
-      SET email = ?
-      WHERE email = ?
-    `
-
-    pool.query(updateUserSql, [newEmail, oldEmail], (err) => {
-      if (err) return res.send(result.createResult(err))
-
-      // update students email as well
-      const updateStudentEmailSql = `
-        UPDATE students 
-        SET email = ?
-        WHERE email = ?
-      `
-
-      pool.query(updateStudentEmailSql, [newEmail, oldEmail], (err) => {
-        if (err) return res.send(result.createResult(err))
-
-        res.send(
-          result.createResult(
-            null,
-            "Profile updated successfully. Please login again."
-          )
-        )
-      })
-    })
+    if (err) 
+      return res.send(result.createResult(err))
+    res.send(result.createResult(null,"Profile updated successfully. Please login again."))
   })
+
 })
 
+module.exports = router
 
 // // DELETE : student/delete
 // router.delete("/delete", checkAuthorizationForStudent, (req, res) => {
@@ -195,7 +164,6 @@ router.put("/update-profile", checkAuthorizationForStudent, (req, res) => {
 //   )
 // })
 
-module.exports = router
 
 // const express = require("express")
 // const result = require("../utils/result")

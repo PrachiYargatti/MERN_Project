@@ -2,7 +2,7 @@ const express = require("express")
 const result = require("../utils/result")
 const pool = require("../db/pool")
 const { checkAuthorization } = require("../utils/auth")
-const router = express.Router()
+const router = express.Router() // mini express app, used for handling routes, router instance 
 
 // Admin APIs
 // GET : course/all-active-courses (both student and admin)
@@ -25,7 +25,7 @@ router.get("/all-courses", checkAuthorization, (req, res) => {
         params.push(startDate, endDate)
     }
 
-    sql += ' ORDER BY start_date DESC'
+    sql += ' ORDER BY start_date ASC'
 
     pool.query(sql, params, (error, data) => {
         res.send(result.createResult(error, data))

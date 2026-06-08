@@ -5,11 +5,11 @@ function AdminRoute({ children }) {
   const role = sessionStorage.getItem("role");
 
   if (!token) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/login" replace />;
   }
 
   if (role !== "admin") {
-    return <Navigate to="/home" replace />;
+    return <Navigate to="/" replace />;
   }
 
   return children;

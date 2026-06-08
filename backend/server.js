@@ -1,5 +1,6 @@
-const express = require("express")
-const cors = require("cors")
+const express = require("express") //js framework, Handles routing, middleware, HTTP lifecycle
+const cors = require("cors") //Enables cross-origin requests (frontend ↔ backend)
+// Prevents browser-level request blocking
 
 const userRouter = require("./routes/user")
 const studentRouter = require("./routes/student")
@@ -7,22 +8,29 @@ const courseRouter = require("./routes/course")
 const videoRouter = require("./routes/video")
 const adminRouter = require("./routes/admin")
 const { authUser } = require("./utils/auth")
+const db = require("./db/pool")
 
 const app = express()
 
 // CORS FIRST
 app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "https://course-management-system-student-appl.netlify.app"
-  ],
+  origin: true,
   credentials: true
 }))
 // JSON
 app.use(express.json())
 
+db.getConnection((err, connection) => {
+  if (err) console.log("Database Error:", err);
+  else {
+    console.log("MySQL Connected Successfully");
+    connection.release();
+  }
+});
+
+
 // PUBLIC ROUTES (NO AUTH)
-app.use("/user", userRouter)
+app.use("/user", userRouter) 
 
 // AUTH AFTER LOGIN/SIGNUP
 app.use(authUser)

@@ -27,11 +27,12 @@ function Login() {
                 sessionStorage.setItem('token', result.data.token)
                 sessionStorage.setItem('role', result.data.role)
                 setLoginStatus(true)
-                navigate('/home')
+                navigate('/')
                 toast.success('Login successful')
             }
             else{
                 toast.error(result.error)
+                // toast.error("Invalid crendential")
             }
         }
     }
