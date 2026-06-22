@@ -10,55 +10,93 @@ const router = express.Router()
 
 // POST : /user/signin
 router.post("/signin", (req, res) => {
-  const { email, password } = req.body
 
-  console.log("Email:", email)
-  console.log("Password:", password)
+    const email = req.body.email?.trim()
+    const password = req.body.password?.trim()
 
-  const hashedPassword = cryptojs.SHA256(password).toString()
+    console.log("=================================")
+    console.log("LOGIN REQUEST")
+    console.log("Email:", email)
+    console.log("Password:", password)
 
-  console.log("Generated Hash:", hashedPassword)
+    const hashedPassword = cryptojs.SHA256(password).toString()
 
-  const sql = `
-    SELECT *
-    FROM users
-    WHERE email = ?
-      AND password = ?
-  `
+    console.log("Generated Hash:", hashedPassword)
 
-  pool.query(sql, [email, hashedPassword], (error, data) => {
-    if (error) {
-      console.log("DB Error:", error)
-      return res.send(result.createResult(error))
-    }
+    const sql = `
+        SELECT *
+        FROM users
+        WHERE email = ?
+        AND password = ?
+    `
 
-    console.log("Rows Found:", data.length)
+    pool.query(sql, [email, hashedPassword], (error, data) => {
 
-    if (data.length === 0) {
-      return res.send(
-        result.createResult("Invalid email or password")
-      )
-    }
+        if (error) {
+            console.log("DB ERROR:", error)
 
-    const user = data[0]
+            return res.send(
+                result.createResult(error)
+            )
+        }
 
-    const payload = {
-      email: user.email,
-      role: user.role
-    }
+        console.log("Rows Found:", data.length)
 
-    const token = jwt.sign(payload, config.SECRET)
+        if (data.length === 0) {
 
-    const userData = {
-      email: user.email,
-      role: user.role,
-      token
-    }
+            console.log("INVALID LOGIN")
 
-    res.send(
-      result.createResult(null, userData)
-    )
-  })
+            return res.send(
+                result.createResult(
+                    "Invalid email or password"
+                )
+            )
+        }
+
+        const user = data[0]
+
+        const payload = {
+            email: user.email,
+            role: user.role
+        }
+
+        const token = jwt.sign(
+            payload,
+            config.SECRET
+        )
+
+        const userData = {
+            email: user.email,
+            role: user.role,
+            token
+        }
+
+        console.log("LOGIN SUCCESS")
+
+        res.send(
+            result.createResult(
+                null,
+                userData
+            )
+        )
+    })
+})
+
+router.get("/", (req, res) => {
+
+    const email = req.headers.email
+
+    const sql = `
+        SELECT *
+        FROM users
+        WHERE email = ?
+    `
+
+    pool.query(sql, [email], (error, data) => {
+        res.send(
+            result.createResult(error, data)
+        )
+    })
 })
 
 module.exports = router
