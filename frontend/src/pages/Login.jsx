@@ -45,12 +45,12 @@ function Login() {
 
                 <div className="mt-3 mb-3">
                     <label htmlFor="inputEmail" className="form-label">Email</label>
-                    <input type="email" className="form-control" id="inputEmail" placeholder="Enter email" value={email} onChange={event => setEmail(event.target.value)} />
+                    <input type="email" className="form-control" id="inputEmail" placeholder="Enter email" value={email} onChange={event => setEmail(event.target.value)} required/>
                 </div>
 
                 <div className="mb-3">
                     <label htmlFor="inputPassword" className="form-label">Password</label>
-                    <input type="password" className="form-control" id="inputPassword" placeholder="Enter password" value={password} onChange={event => setPassword(event.target.value)} />
+                    <input type="password" className="form-control" id="inputPassword" placeholder="Enter password" value={password} onChange={event => setPassword(event.target.value)} required />
                 </div>
 
                 <div className="mb-3">
