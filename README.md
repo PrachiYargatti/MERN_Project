@@ -2,7 +2,7 @@
 
 A full-stack Course Management System built using the MERN stack (React, Node.js, Express.js, and MySQL). The application allows administrators to manage courses and videos while enabling students to enroll in courses and access learning content.
 
-## 🔗 Live Demo: https://course-management-system-student-appl.netlify.app/
+🔗 Live Demo: https://course-management-system-student-appl.netlify.app/
 
 ## Features
 
