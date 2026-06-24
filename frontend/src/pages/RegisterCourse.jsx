@@ -61,6 +61,7 @@ function RegisterCourse() {
             <h4 className="mb-4">Register to Course</h4>
 
             <input
+              type="text"
               className="form-control mb-3"
               placeholder="Full Name"
               value={name}
@@ -68,13 +69,16 @@ function RegisterCourse() {
             />
 
             <input
+              type="email"
               className="form-control mb-3"
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
             />
 
             <input
+              type="number"
               className="form-control mb-3"
               placeholder="Mobile Number"
               value={mobile}
