@@ -17,13 +17,41 @@ function RegisterCourse() {
   }
 
   const handleRegister = async () => {
+    // Name validation
+    if (!name.trim()) {
+      alert("Name is required");
+      return;
+    }
+
+    const nameRegex = /^[A-Za-z ]+$/;
+    if (!nameRegex.test(name)) {
+      alert("Name should contain only letters");
+      return;
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(email)) {
+      alert("Please enter a valid email address");
+      return;
+    }
+
+    // Mobile validation
+    const mobileRegex = /^[0-9]{10}$/;
+
+    if (!mobileRegex.test(mobile)) {
+      alert("Mobile number must be exactly 10 digits");
+      return;
+    }
+
     try {
       const token = sessionStorage.getItem("token");
 
       const student = {
         name,
         email,
-        mobile_no: mobile
+        mobile_no: mobile,
       };
 
       const response = await registerCourse(
@@ -39,6 +67,7 @@ function RegisterCourse() {
         alert(response.error || "Registration failed");
       }
     } catch (err) {
+      console.error(err);
       alert("Something went wrong");
     }
   };
@@ -46,8 +75,9 @@ function RegisterCourse() {
   return (
     <>
       <AppNavbar />
+
       <div className="container py-5 w-50">
-        {/* Course summary */}
+        {/* Course Summary */}
         <div className="card mb-4">
           <div className="card-body">
             <h5>{course.course_name}</h5>
@@ -55,7 +85,7 @@ function RegisterCourse() {
           </div>
         </div>
 
-        {/* Registration form */}
+        {/* Registration Form */}
         <div className="card shadow">
           <div className="card-body">
             <h4 className="mb-4">Register to Course</h4>
@@ -74,15 +104,17 @@ function RegisterCourse() {
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              required
             />
 
             <input
-              type="number"
+              type="text"
               className="form-control mb-3"
               placeholder="Mobile Number"
+              maxLength="10"
               value={mobile}
-              onChange={(e) => setMobile(e.target.value)}
+              onChange={(e) =>
+                setMobile(e.target.value.replace(/\D/g, ""))
+              }
             />
 
             <button

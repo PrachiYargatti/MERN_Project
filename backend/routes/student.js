@@ -13,6 +13,43 @@ router.post("/register-to-course", (req, res) => {
 
   const { name, email, course_id, mobile_no } = req.body
 
+  // Validation
+  if (!name || !email || !course_id || !mobile_no) {
+    return res.send(
+      result.createResult("All fields are required")
+    )
+  }
+
+  const nameRegex = /^[A-Za-z ]+$/
+
+  if (!nameRegex.test(name.trim())) {
+    return res.send(
+      result.createResult(
+        "Name should contain only letters and spaces"
+      )
+    )
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+  if (!emailRegex.test(email)) {
+    return res.send(
+      result.createResult(
+        "Invalid email format"
+      )
+    )
+  }
+
+  const mobileRegex = /^[0-9]{10}$/
+
+  if (!mobileRegex.test(String(mobile_no))) {
+    return res.send(
+      result.createResult(
+        "Mobile number must be exactly 10 digits"
+      )
+    )
+  }
+
   const checkRegistrationSql = `
     SELECT *
     FROM students
@@ -29,7 +66,9 @@ router.post("/register-to-course", (req, res) => {
 
       if (studentRows.length > 0) {
         return res.send(
-          result.createResult("Already registered for this course")
+          result.createResult(
+            "Already registered for this course"
+          )
         )
       }
 
@@ -64,7 +103,6 @@ router.post("/register-to-course", (req, res) => {
             )
           }
 
-          // User does not exist
           if (userRows.length === 0) {
 
             const defaultPassword =
@@ -82,7 +120,9 @@ router.post("/register-to-course", (req, res) => {
               (error) => {
 
                 if (error)
-                  return res.send(result.createResult(error))
+                  return res.send(
+                    result.createResult(error)
+                  )
 
                 insertStudent()
               }
@@ -98,7 +138,6 @@ router.post("/register-to-course", (req, res) => {
     }
   )
 })
-
 
 // ==========================================
 // PUT : /student/change-password
