@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS project_db;
-CREATE DATABASE project_db;
-USE project_db;
+DROP DATABASE IF EXISTS railway;
+CREATE DATABASE railway;
+USE railway;
 
 -- ==========================================
 -- USERS TABLE
@@ -127,9 +127,6 @@ INSERT INTO courses
     video_expire_days
 )
 VALUES
-
--- Old / expired courses
-
 (
     101,
     'Web Dev Basics',
